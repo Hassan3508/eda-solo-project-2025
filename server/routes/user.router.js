@@ -23,14 +23,16 @@ router.get('/', (req, res) => {
 router.post('/register', (req, res, next) => {
   const username = req.body.username;
   const hashedPassword = encryptLib.encryptPassword(req.body.password);
+  const name = req.body.name;
+  const phone = req.body.phone 
 
   const sqlText = `
     INSERT INTO "user"
-      ("username", "password")
+      ("username", "password", "name", phone)
       VALUES
-      ($1, $2);
+      ($1, $2, $3, $4);
   `;
-  const sqlValues = [username, hashedPassword];
+  const sqlValues = [username, hashedPassword, name, phone];
 
   pool.query(sqlText, sqlValues)
     .then(() => {
