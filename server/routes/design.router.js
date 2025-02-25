@@ -37,11 +37,36 @@ router.get('/', async (req, res) => {
   try {
     const result = await pool.query(query);
     
-    res.status(201).send(result.rows[0]);  
+    res.status(201).send(result.rows);  
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: 'Error fetching designs' });
   }
 });
+
+router.delete("/delete/:id", rejectUnauthenticated, (req, res) => {
+    const query = `
+    DELETE 
+  FROM "designs"
+  WHERE "id" = $1;
+    `;
+    pool.query(query, [req.params.id]) 
+      .then(result => {
+      
+        res.sendStatus(201);
+      })
+      .catch(err => {
+        console.log(`Error deleting design`, err);
+        res.sendStatus(500);
+      })
+  })
+
+
+  
+  
+  
+
+module.exports = router;
+
 
 module.exports = router;
