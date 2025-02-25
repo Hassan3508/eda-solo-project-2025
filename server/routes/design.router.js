@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
   try {
     const result = await pool.query(query);
     
-    res.status(201).send(result.rows);  
+    res.status(201).send(result.rows[0]);  
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: 'Error fetching designs' });
