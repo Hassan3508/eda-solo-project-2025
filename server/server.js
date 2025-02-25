@@ -13,6 +13,8 @@ const passport = require('./strategies/user.strategy');
 
 // Require router files:
 const userRouter = require('./routes/user.router');
+const designRouter = require('./routes/design.router');
+
 
 
 
@@ -26,6 +28,8 @@ app.use(passport.session());
 
 // Apply router files:
 app.use('/api/user', userRouter);
+app.use('/api/design', designRouter);
+
 
 
 // Start the server:
