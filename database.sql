@@ -8,14 +8,24 @@ DROP TABLE IF EXISTS "user";
 -------------------------------------------------------
 --------------------------------------------------
 -- TABLE SCHEMAS:
-CREATE TABLE "user" (
-  "id" SERIAL PRIMARY KEY,
-  "username" VARCHAR (80) UNIQUE NOT NULL,
-  "password" VARCHAR (1000) NOT NULL,
-  "inserted_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
-);
+-- CREATE TABLE "user" (
+--   "id" SERIAL PRIMARY KEY,
+--   "username" VARCHAR (80) UNIQUE NOT NULL,
+--   "password" VARCHAR (1000) NOT NULL,
+--   "inserted_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+--   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
+-- );
 
+
+CREATE TABLE "user" (
+    id SERIAL PRIMARY KEY,
+    username character varying(255) NOT NULL DEFAULT 'UNIQUE NOT NULL'::character varying,
+    password character varying(255) NOT NULL,
+    phone character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    created_at timestamp(0) without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    is_admin boolean NOT NULL DEFAULT false
+);
 
 -------------------------------------------------------
 --------------------------------------------------
@@ -25,7 +35,7 @@ CREATE TABLE "user" (
 --   your dummy users. Be sure to copy/paste their hashed passwords, as well.
 --   This is only for development purposes! Here's a commented-out example:
 -- INSERT INTO "user"
---   ("username", "password")
+--   ("username", "password","phone", "name")
 --   VALUES
 --   ('unicorn10', '$2a$10$oGi81qjXmTh/slGzYOr2fu6NGuCwB4kngsiWQPToNrZf5X8hxkeNG'), --pw: 123
 --   ('cactusfox', '$2a$10$8./c/6fB2BkzdIrAUMWOxOlR75kgmbx/JMrMA5gA70c9IAobVZquW'); --pw: 123
