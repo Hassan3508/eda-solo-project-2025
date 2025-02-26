@@ -44,7 +44,24 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.delete("/delete/:id", rejectUnauthenticated, (req, res) => {
+//PUT route
+router.put("/:id", rejectUnauthenticated, (req, res) => {
+  const query = `
+  UPDATE "designs" SET "price" = $2 WHERE "id" = $1;
+  `;
+  pool.query(query, [req.params.id, req.body.price]) 
+    .then(result => {
+    
+      res.sendStatus(201);
+    })
+    .catch(err => {
+      console.log(`Error deleting design`, err);
+      res.sendStatus(500);
+    })
+})
+
+//Delete route
+router.delete("/:id", rejectUnauthenticated, (req, res) => {
     const query = `
     DELETE 
   FROM "designs"
@@ -60,13 +77,6 @@ router.delete("/delete/:id", rejectUnauthenticated, (req, res) => {
         res.sendStatus(500);
       })
   })
-
-
-  
-  
-  
-
-module.exports = router;
 
 
 module.exports = router;
