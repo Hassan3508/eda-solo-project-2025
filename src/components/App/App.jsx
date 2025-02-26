@@ -10,6 +10,7 @@ import Nav from '../Nav/Nav';
 import HomePage from '../HomePage/HomePage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import DesignList from '../DesignList';
 
 
 function App() {
@@ -58,6 +59,9 @@ function App() {
               )
             }
           />
+           <Route 
+             path="/designlist"
+            element={<DesignList />}/>
           <Route 
             exact path="/about"
             element={
