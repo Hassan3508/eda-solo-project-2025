@@ -11,7 +11,7 @@ import HomePage from '../HomePage/HomePage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import DesignList from '../DesignList';
-
+import DesignForm from '../DesignForm';
 
 function App() {
   const user = useStore((state) => state.user);
@@ -61,7 +61,12 @@ function App() {
           />
            <Route 
              path="/designlist"
-            element={<DesignList />}/>
+            element={<DesignList />}
+          />
+          <Route 
+             path="/designform"
+            element={<DesignForm />}
+          />
           <Route 
             exact path="/about"
             element={

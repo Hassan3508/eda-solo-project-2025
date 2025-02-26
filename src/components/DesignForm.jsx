@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useStore } from '../zustand/store';  
+import useStore from '../zustand/store';  
 
 const DesignForm = () => {
     const [title, setTitle] = useState('');

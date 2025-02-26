@@ -28,6 +28,17 @@ function Nav() {
             </li>
             <li>
               <NavLink to="/designlist">Designs</NavLink>
+              </li>
+          </>
+        )
+      }
+      { // User is logged in, render these links:
+        user.is_admin && (
+          <>
+            
+              <li>
+             
+              <NavLink to="/design">Add Designs</NavLink>
             </li>
           </>
         )
