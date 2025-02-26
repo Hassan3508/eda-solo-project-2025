@@ -25,6 +25,20 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
     res.status(500).send({ error: 'Error creating booking' });
   }
 });
+// Customer gets their bookings
+router.get('/', rejectUnauthenticated, async (req, res) => {
+  const userId = req.user.id;
+
+  const query = 'SELECT * FROM bookings WHERE user_id = $1';
+  try {
+    const result = await pool.query(query, [userId]);
+    res.status(200).send(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error fetching bookings' });
+  }
+});
+
 
 
 
