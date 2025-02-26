@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-// import useDesignStore from './store';
 import useStore from '../zustand/store';
 
 const DesignList = () => {
