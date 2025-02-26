@@ -11,7 +11,17 @@ const createDesignSlice = (set, get) => ({
         } catch (error) {
             console.log('Error fetching designs:', error); 
         }
+    },
+    addDesign: async (newDesign) => {
+        try {
+            await axios.post('/api/designs', newDesign);
+            // Refresh data
+            get().fetchDesigns();
+        } catch (error) {
+            console.error('Error adding designs:', error);
+        }
     }
+    
 });
 
 export default createDesignSlice;
