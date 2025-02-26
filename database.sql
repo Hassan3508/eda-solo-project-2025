@@ -16,16 +16,64 @@ DROP TABLE IF EXISTS "user";
 --   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 -- );
 
-
-CREATE TABLE "user" (
-    id SERIAL PRIMARY KEY,
-    username character varying(255) NOT NULL DEFAULT 'UNIQUE NOT NULL'::character varying,
-    password character varying(255) NOT NULL,
-    phone character varying(255) NOT NULL,
-    name character varying(255) NOT NULL,
-    created_at timestamp(0) without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    is_admin boolean NOT NULL DEFAULT false
+CREATE TABLE "user"(
+    "id" SERIAL NOT NULL,
+    "username" VARCHAR(255) NOT NULL DEFAULT 'UNIQUE NOT NULL',
+    "password" VARCHAR(255) NOT NULL,
+    "phone" VARCHAR(255) NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
+    "created_at" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "is_admin" BOOLEAN NOT NULL DEFAULT FALSE
 );
+ALTER TABLE
+    "user" ADD PRIMARY KEY("id");
+
+
+CREATE TABLE "bookings"(
+    "id" SERIAL NOT NULL,
+    "user_id" INTEGER NOT NULL,
+    "design_id" INTEGER NOT NULL,
+    "appoinment_date" DATE NOT NULL,
+    "created_at" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+    "payment_status" VARCHAR(255) NOT NULL DEFAULT 'pending',
+    "status" VARCHAR(20) NOT NULL DEFAULT 'scheduled',
+    "available_id" INTEGER NOT NULL,
+    "payment_date" DATE NOT NULL,
+    "payment_method" INTEGER NOT NULL
+);
+ALTER TABLE
+    "bookings" ADD PRIMARY KEY("id");
+COMMENT
+ON COLUMN
+    "bookings"."payment_method" IS 'this is a hard-coded dropdown list:
+cash, credit card, debit card';
+CREATE TABLE "designs"(
+    "id" SERIAL NOT NULL,
+    "title" VARCHAR(255) NOT NULL,
+    "image_url" VARCHAR(255) NOT NULL DEFAULT 'NOT NULL',
+    "price" DECIMAL(8, 2) NOT NULL,
+    "description" TEXT NOT NULL
+);
+ALTER TABLE
+    "designs" ADD PRIMARY KEY("id");
+
+CREATE TABLE "office_hours"(
+    "id" SERIAL NOT NULL,
+    "start_time" VARCHAR(20) NOT NULL,
+    "end_time" VARCHAR(20) NOT NULL,
+    "day_of_week" VARCHAR(255) NOT NULL DEFAULT '1'
+);
+ALTER TABLE
+    "office_hours" ADD PRIMARY KEY("id");
+COMMENT
+ON COLUMN
+    "office_hours"."day_of_week" IS 'time is by 1 hour';
+ALTER TABLE
+    "bookings" ADD CONSTRAINT "bookings_design_id_foreign" FOREIGN KEY("design_id") REFERENCES "designs"("id");
+ALTER TABLE
+    "bookings" ADD CONSTRAINT "bookings_available_id_foreign" FOREIGN KEY("available_id") REFERENCES "office_hours"("id");
+ALTER TABLE
+    "bookings" ADD CONSTRAINT "bookings_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "user"("id");
 
 -------------------------------------------------------
 --------------------------------------------------
