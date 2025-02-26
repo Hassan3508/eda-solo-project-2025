@@ -40,6 +40,23 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
   }
 });
 
+// Admin gets all bookings
+router.get('/admin', rejectUnauthenticated, async (req, res) => {
+  if (!req.user.is_admin) {
+    return res.status(403).send({ error: 'Permission denied' });
+  }
+
+  const query = 'SELECT * FROM bookings';
+  try {
+    const result = await pool.query(query);
+    res.status(200).send(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error fetching all bookings' });
+  }
+});
+
+
 
 
 module.exports = router;
