@@ -47,6 +47,9 @@ function Nav() {
         <li>
           <NavLink to="/about">About</NavLink>
         </li>
+        <li>
+          <NavLink to="/bookingForm">Appointment</NavLink>
+        </li>
       </ul>
     </nav>
   );
