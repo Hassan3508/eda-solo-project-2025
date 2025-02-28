@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const createBookingSlice=(set, get) => ({
   bookings: [],
+  officeHours: [],
   bookingDetails: {
     design_id: '',
     appointment_date: '',
@@ -10,9 +11,19 @@ const createBookingSlice=(set, get) => ({
     payment_date: ''
   },
   // Function to update booking details
-  setBookingDetails: (newDetails) => set({
-    bookingDetails: { ...newDetails }
-  }),
+  setBookingDetails: (newDetails) => set((state) => ({
+    bookingDetails: {...state.bookingDetails, ...newDetails}
+})),
+  // Fetch Office Hours
+fetchOfficeHours: async () => {
+  try {
+    const response = await axios.get('/api/office-hours');
+    set({ officeHours: response.data });
+  } catch (error) {
+    console.log('Error:', error); 
+  }
+},
+
 
   // Function to create a booking
   createBooking: async () => {

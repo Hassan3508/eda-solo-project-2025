@@ -15,6 +15,8 @@ const passport = require('./strategies/user.strategy');
 const userRouter = require('./routes/user.router');
 const designsRouter = require('./routes/designs.router');
 const bookingsRouter = require('./routes/bookings.router'); 
+const officeHoursRouter = require('./routes/officeHours.routes'); 
+
 
 
 // Apply middleware:
@@ -29,6 +31,8 @@ app.use(passport.session());
 app.use('/api/user', userRouter);
 app.use('/api/designs', designsRouter);
 app.use('/api/bookings', bookingsRouter);
+app.use('/api/office-hours', officeHoursRouter);
+
 
 
 // Start the server:
