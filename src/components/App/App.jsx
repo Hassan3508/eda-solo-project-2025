@@ -13,6 +13,7 @@ import RegisterPage from '../RegisterPage/RegisterPage';
 import DesignList from '../DesignList';
 import DesignForm from '../DesignForm';
 import BookingForm from '../BookingForm';
+import CustomerPage from '../CustomerPage';
 
 function App() {
   const user = useStore((state) => state.user);
@@ -75,6 +76,7 @@ function App() {
              path="/bookingform/:id"
             element={<BookingForm />}
           />
+          <Route path="/customer/:id" element={<CustomerPage />} />
           <Route 
             exact path="/about"
             element={
