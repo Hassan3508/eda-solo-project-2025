@@ -1,13 +1,17 @@
+import useStore from '../zustand/store'
 import React, { useState, useEffect } from 'react';
-import useStore from '../zustand/store'; 
+import { useNavigate } from 'react-router-dom';
+
 import { useParams } from 'react-router-dom';
  
 const BookingForm = () => {
   const setBookingDetails = useStore(state => state.setBookingDetails);
-  const bookingDetails = useStore((state) => state.bookingDetails);
   const createBooking = useStore(state => state.createBooking);
   const officeHours = useStore(state => state.officeHours);
   const designs = useStore((store) => store.designs);
+  // const BookingDetails = useStore((store) => store.BookingDetails);
+
+  const navigate = useNavigate();
 
   const {id} = useParams();
   console.log('DESIGN ID', id);
@@ -23,31 +27,36 @@ const findDesignById = (id) => {
   // console.log('find the image for this id', id);
   return designs.find((design) => Number(design.id) === Number(id)) ;
 }
-  //  console.log('available slots to choose', officeHours);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-console.log('available Id', availableId);
-console.log('appointmentDate', appointmentDate);
-console.log('payment_method', paymentMethod);
-console.log('payment date', paymentDate);
-    // setBookingDetails({
-    //   design_id: id, //will eventually use the 'id' from params
-    //   appointment_date: appointmentDate,
-    //   available_id: Number(availableId),
-    //   payment_method: paymentMethod,
-    //   payment_date: paymentDate,
-    // });
+    
+    setBookingDetails({
+      design_id: id, //will eventually use the 'id' from params
+      appointment_date: appointmentDate,
+      available_id: Number(availableId),
+      payment_method: paymentMethod,
+      payment_date: paymentDate,
+    });
 
-    // console.log('booking Details', bookingDetails);
 
-    // createBooking();
-  };
+    createBooking();
 
-  useEffect(() => {
-
-  }, [])
+  navigate(`/customer/${id}`);
   
+  };
+  // setBookingDetails({
+  //   design_id: '',
+  //   appointment_date: '',
+  //   available_id: '',
+  //   payment_method: '',
+  //   payment_date: ''
+  // });
+  
+  // const handleCancel = () => {
+  //  // Navigate back to design page
+  //   navigate(`/designs/${id}`);
+  // };
 
   return (
     <div>
@@ -79,10 +88,19 @@ console.log('payment date', paymentDate);
 
         <div>
           <div>Requested Time:</div>
-        
-            <select id='select'>
-          {officeHours?.map((s) => <option onChange={() => setAvailableId(s.id)} value={s?.id}>Start: {s?.start_time} End: {s?.end_time}</option>)}
-        </select>
+          <select 
+          id='select' 
+           onChange={(e) => setAvailableId(e.target.value)} 
+          value={availableId}
+         >  
+       {officeHours?.map((s) => (
+          <option key={s.id} value={s.id}>
+         Start: {s.start_time} End: {s.end_time}
+       </option>
+  ))}
+</select>
+
+             
         </div>
       
 
@@ -113,6 +131,8 @@ console.log('payment date', paymentDate);
         </div>
 
         <button type="submit">Submit Booking</button>
+        {/* <button type="button" onClick={handleCancel}>Cancel</button> */}
+
       </form>
     </div>
   );

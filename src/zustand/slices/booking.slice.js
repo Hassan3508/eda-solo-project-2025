@@ -23,7 +23,16 @@ fetchOfficeHours: async () => {
     console.log('Error:', error); 
   }
 },
-
+// Fetch Office Hours
+fetchBookings: async () => {
+  try {
+    const response = await axios.get('/api/bookings');
+    set({ bookings: response.data });
+  } catch (error) {
+    console.log('Error:', error); 
+  }
+},
+ 
 
   // Function to create a booking
   createBooking: async () => {
