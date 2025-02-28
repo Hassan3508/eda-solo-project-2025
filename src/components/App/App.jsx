@@ -17,9 +17,12 @@ import BookingForm from '../BookingForm';
 function App() {
   const user = useStore((state) => state.user);
   const fetchUser = useStore((state) => state.fetchUser);
+  const fetchOfficeHours = useStore(state => state.fetchOfficeHours);
+
 
   useEffect(() => {
     fetchUser();
+    fetchOfficeHours();
   }, [fetchUser]);
 
   return (
@@ -69,7 +72,7 @@ function App() {
             element={<DesignForm />}
           />
           <Route 
-             path="/bookingform"
+             path="/bookingform/:id"
             element={<BookingForm />}
           />
           <Route 
