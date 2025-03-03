@@ -23,7 +23,8 @@ CREATE TABLE "user"(
     "phone" VARCHAR(255) NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "created_at" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "is_admin" BOOLEAN NOT NULL DEFAULT FALSE
+    "is_admin" BOOLEAN NOT NULL DEFAULT FALSE,
+    "confirm_date" DATE
 );
 ALTER TABLE
     "user" ADD PRIMARY KEY("id");
@@ -33,7 +34,7 @@ CREATE TABLE "bookings"(
     "id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "design_id" INTEGER NOT NULL,
-    "appoinment_date" DATE NOT NULL,
+    "appointment_date" DATE NOT NULL,
     "created_at" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
     "payment_status" VARCHAR(255) NOT NULL DEFAULT 'pending',
     "status" VARCHAR(20) NOT NULL DEFAULT 'scheduled',

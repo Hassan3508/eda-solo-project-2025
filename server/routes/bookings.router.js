@@ -58,7 +58,37 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
 
 
 
+router.delete("admin/:id", rejectUnauthenticated, (req, res) => {
+  const query = `
+  DELETE 
+FROM "bookings"
+WHERE "id" = $1;
+  `;
+  pool.query(query, [req.params.id]) 
+    .then(result => {
+    
+      res.sendStatus(201);
+    })
+    .catch(err => {
+      console.log(`Error deleting design`, err);
+      res.sendStatus(500);
+    })
+})
 
+router.delete("/admin/:id", rejectUnauthenticated, (req, res) => {
+  const query = `
+    DELETE FROM "bookings"
+    WHERE "id"= $1;
+  `;
 
+  pool.query(query, [req.params.id])
+    .then(() => {
+      res.sendStatus(204); 
+    })
+    .catch(err => {
+      console.log(`Error deleting booking`, err);
+      res.sendStatus(500); 
+    });
+});
 
 module.exports = router;
