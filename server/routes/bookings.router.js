@@ -108,5 +108,41 @@ router.delete("/:id", rejectUnauthenticated, (req, res) => {
 
 
 
+// API endpoint to confirm a booking and update the `confirm_date`
+router.put('/confirm/:bookingId', rejectUnauthenticated, async (req, res) => {
+  // Check if the user is an admin
+  if (!req.user.is_admin) {
+    return res.status(403).send({ message: 'Permission denied' });
+  }
+
+  const { bookingId } = req.params;
+
+  try {
+    const query = `
+      UPDATE "bookings"
+      SET "status" = 'confirmed',
+          "confirm_date" = CURRENT_DATE 
+      WHERE "id" = $1
+      RETURNING *;
+    `;
+
+    const result = await pool.query(query, [bookingId]);
+
+    // If no booking is found with the provided ID
+    if (result.rows.length === 0) {
+      return res.status(404).send({ message: 'Booking not found' });
+    }
+
+    res.status(200).send({
+      message: 'Booking confirmed',
+      booking: result.rows[0],  
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: 'Internal server error' });
+  }
+});
+
+
 
 module.exports = router;
