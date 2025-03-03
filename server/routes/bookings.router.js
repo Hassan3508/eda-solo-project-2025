@@ -90,5 +90,23 @@ router.delete("/admin/:id", rejectUnauthenticated, (req, res) => {
       res.sendStatus(500); 
     });
 });
+router.delete("/:id", rejectUnauthenticated, (req, res) => {
+  const query = `
+   DELETE FROM "bookings"
+   WHERE "id" = $1 AND "user_id" = $2;
+`;
+  pool.query(query, [req.params.id, req.user.id])
+    .then(() => {
+      res.sendStatus(204); 
+    })
+    .catch(err => {
+      console.log(`Error deleting booking`, err);
+      res.sendStatus(500); 
+    });
+});
+
+
+
+
 
 module.exports = router;
