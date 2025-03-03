@@ -1,17 +1,14 @@
 import React, { useEffect } from 'react';
 import useStore from '../zustand/store';
 import { useNavigate } from 'react-router-dom';
-
+import { Card, Row, Col } from 'react-bootstrap';
+import './DesignList.css';
 
 const DesignList = () => {
-//   const { designs, fetchDesigns } = useDesignStore();
-const designs = useStore((store) => store.designs);
-console.log('designs', designs);
-const fetchDesigns = useStore((store) => store.fetchDesigns);
-//need to navigate to the bookingForm component with the design id
-const navigate = useNavigate();
+  const designs = useStore((store) => store.designs);
+  const fetchDesigns = useStore((store) => store.fetchDesigns);
+  const navigate = useNavigate();
 
-  
   useEffect(() => {
     fetchDesigns();
   }, [fetchDesigns]);
@@ -19,22 +16,25 @@ const navigate = useNavigate();
   const handleDesign = (id) => {
     navigate(`/bookingForm/${id}`);
   };
-  
 
   return (
     <div>
       <h1>Designs</h1>
       {designs?.length > 0 ? (
-        designs?.map((design) => (
-          <div key={design.id} onClick={() => {
-            handleDesign(design.id)
-          }}>
-            <h2>{design.title}</h2>
-            <img src={design.image_url} alt={design.title} />
-            <p>{design.description}</p>
-            <p>{design.price}</p>
-          </div>
-        ))
+        <Row xs={1} sm={2} md={3} lg={4} xl={5} className="g-4">
+          {designs.map((design) => (
+            <Col key={design.id}>
+              <Card onClick={() => handleDesign(design.id)} style={{ cursor: 'pointer' }}>
+                <Card.Img variant="top" src={design.image_url} alt={design.title} />
+                <Card.Body>
+                  <Card.Title>{design.title}</Card.Title>
+                  <Card.Text>{design.description}</Card.Text>
+                  <Card.Text><strong>Price: </strong>{design.price}</Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
       ) : (
         <p>No designs available</p>
       )}

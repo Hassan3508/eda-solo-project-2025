@@ -9,6 +9,16 @@ axios.defaults.withCredentials = true;
 const createUserSlice = (set, get) => ({
   user: {},
   authErrorMessage: '',
+  allUsers: [],
+  fetchAllUsers: async () => {
+    try {
+      const { data } = await axios.get('/api/user/admin');
+      set({ users: data });
+    } catch (err) {
+      console.log('fetchAllUsers error:', err);
+      set({user : {}});
+    }
+  },
   fetchUser: async () => {
     //  Retrieves the current user's data from the /api/user endpoint.
     try {

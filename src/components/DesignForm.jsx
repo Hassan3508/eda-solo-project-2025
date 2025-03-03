@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useStore from '../zustand/store';  
+import useStore from '../zustand/store';
 
 const DesignForm = () => {
     const [title, setTitle] = useState('');
@@ -8,10 +8,11 @@ const DesignForm = () => {
     const [description, setDescription] = useState('');
 
     const addDesign = useStore((state) => state.addDesign);  
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // destructing method
+        // Destructuring method
         const newDesign = {
             title,
             imageUrl,
@@ -20,7 +21,8 @@ const DesignForm = () => {
         };
 
         addDesign(newDesign);
-        // clear form for admin
+
+        // Clear form for admin
         setTitle('');
         setImageUrl('');
         setPrice('');
@@ -30,41 +32,51 @@ const DesignForm = () => {
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label>Title:</label>
+                <label htmlFor="title">Title:</label>
                 <input
                     type="text"
+                    id="title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
                 />
             </div>
+
             <div>
-                <label>Image URL:</label>
+                <label htmlFor="imageUrl">Image URL:</label>
                 <input
                     type="text"
+                    id="imageUrl"
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
                     required
                 />
             </div>
+
             <div>
-                <label>Price:</label>
+                <label htmlFor="price">Price:</label>
                 <input
                     type="number"
+                    id="price"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     required
                 />
             </div>
+
             <div>
-                <label>Description:</label>
+                <label htmlFor="description">Description:</label>
                 <textarea
+                    id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     required
                 />
             </div>
-            <button type="submit">Add Design</button>
+
+            <button type="submit">
+                Add Design
+            </button>
         </form>
     );
 };

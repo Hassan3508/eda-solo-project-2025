@@ -26,20 +26,6 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// Customer gets their bookings
-router.get('/', rejectUnauthenticated, async (req, res) => {
-  const userId = req.user.id;
-
-  const query = 'SELECT * FROM bookings WHERE user_id = $1';
-  try {
-    const result = await pool.query(query, [userId]);
-    res.status(200).send(result.rows);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: 'Error fetching bookings' });
-  }
-});
-
 // Admin gets all bookings
 router.get('/admin', rejectUnauthenticated, async (req, res) => {
   if (!req.user.is_admin) {
@@ -55,6 +41,22 @@ router.get('/admin', rejectUnauthenticated, async (req, res) => {
     res.status(500).send({ error: 'Error fetching all bookings' });
   }
 });
+
+// Customer gets their bookings
+router.get('/', rejectUnauthenticated, async (req, res) => {
+  const userId = req.user.id;
+
+  const query = 'SELECT * FROM bookings WHERE user_id = $1';
+  try {
+    const result = await pool.query(query, [userId]);
+    res.status(200).send(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error fetching bookings' });
+  }
+})
+
+
 
 
 
