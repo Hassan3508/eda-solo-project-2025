@@ -13,10 +13,10 @@ const createUserSlice = (set, get) => ({
   fetchAllUsers: async () => {
     try {
       const { data } = await axios.get('/api/user/admin');
-      set({ users: data });
+      set({ allUsers: data });
     } catch (err) {
       console.log('fetchAllUsers error:', err);
-      set({user : {}});
+      set({allUsers : []});
     }
   },
   fetchUser: async () => {

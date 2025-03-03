@@ -6,11 +6,15 @@ const Admin = () => {
     const bookings = useStore((state) => state.bookings);
     const officeHours = useStore((state) => state.officeHours)
     const designs = useStore((state) => state.designs)
+    const allUsers = useStore((state) => state.allUsers);
+
     const fetchDesigns = useStore((store) => store.fetchDesigns);
     const fetchBookings = useStore((state) => state.fetchBookings);
+    const fetchAllUsers =  useStore((state) => state.fetchAllUsers);
 
     console.log('all the bookings', bookings);
     console.log('all the designs', designs);
+    console.log('all users', allUsers);
 
     const findOfficeHourById = (availableId) => {
       console.log('find this availableId in the office hours', availableId);
@@ -24,13 +28,19 @@ const Admin = () => {
       //return an object {start: '', end:''};
       const myDesign = designs.find((d) => Number(d.id) === Number(designId));
       console.log('my Design', myDesign);
-      return myDesign.title;
+      return myDesign?.title ?? 'NOT FOUND';
     }
-  
+    const findUserById = (userId) => {
+      console.log('find user by id', userId);
+      const myUser= allUsers?.find((u) => Number(u.id) === Number(userId));
+      console.log('my USER', myUser);
+      return myUser?.name;
+    }
 
     useEffect(() => {
         fetchBookings();
         fetchDesigns();
+        fetchAllUsers();
     }, [])
 
     return (
@@ -40,7 +50,7 @@ const Admin = () => {
             <div>
               {bookings.map((booking, index) => (
                 <div key={index}>
-                  <h2>bookingDetails ID: {booking.id}</h2>
+                  <h2>Client Name: {findUserById(booking.user_id) ?? 'NOT FOUND'}</h2>
                   <p>Design: {findDesignById(booking.design_id)}</p>
                   <p>Appointment Date: {booking.appointment_date}</p>
                   <p>Time Slot: {findOfficeHourById(booking.available_id)}</p>

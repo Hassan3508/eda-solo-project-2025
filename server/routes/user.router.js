@@ -16,7 +16,7 @@ const router = express.Router();
         //select all from table users
       //return result.rows
         // Select all from the table users
-        const query = 'SELECT * FROM user'; 
+        const query = 'SELECT * FROM "user"'; 
         const result = await pool.query(query); 
         res.status(200).send(result.rows); 
       } catch (error) {

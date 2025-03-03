@@ -53,9 +53,9 @@ function Nav() {
         <li>
           <NavLink to="/customerpage">Your Appointment</NavLink>
         </li>
-        <li>
+        {user.is_admin && <li>
               <NavLink to="/admin">All Bookings</NavLink>
-           </li>
+           </li>}
       </ul>
     </nav>
   );
