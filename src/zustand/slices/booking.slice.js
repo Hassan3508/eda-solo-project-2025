@@ -48,6 +48,7 @@ fetchBookings: async () => {
   // Function to create a booking
   createBooking: async () => {
     const { bookingDetails } = get();
+    console.log('bookingdetails', bookingDetails);
 
     try {
       await axios.post('/api/bookings', bookingDetails);
@@ -56,7 +57,31 @@ fetchBookings: async () => {
       console.error('Error creating booking:', error);
       
     }
-  }
+  },
+
+  // deleteBooking: async (id) => {
+  //   try {
+  //     await axios.delete(`/api/bookings/${id}`);
+  //     // After deletion, fetch bookings again to update the list
+  //     await get().fetchBookings();
+  //   } catch (error) {
+  //     console.error('Error deleting booking:', error);
+  //   }
+  // },
+  
+    // deleteCustomerBooking: async (id) => {
+    //   try {
+    //     await axios.delete(`/api/bookings/${id}`);
+    //     await get().fetchCustomerBookings();
+    //   } catch (error) {
+    //     console.error('Error deleting booking:', error);
+    //   }
+    // }
 })
+
+
+  
+
+
 
 export default createBookingSlice;
