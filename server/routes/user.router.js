@@ -2,9 +2,28 @@ const express = require('express');
 const encryptLib = require('../modules/encryption');
 const pool = require('../modules/pool');
 const userStrategy = require('../strategies/user.strategy');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 
 const router = express.Router();
+
+    router.get('/admin', rejectUnauthenticated, async (req, res) => { 
+      if (!req.user.is_admin) {
+        return res.sendStatus(403); 
+      }
+    
+      try {
+        //select all from table users
+      //return result.rows
+        // Select all from the table users
+        const query = 'SELECT * FROM user'; 
+        const result = await pool.query(query); 
+        res.status(200).send(result.rows); 
+      } catch (error) {
+        console.error(error); 
+        res.status(500).send({ error: 'Error fetching all users' }); 
+      }
+    });
 
 // If the request came from an authenticated user, this route
 // sends back an object containing that user's information.

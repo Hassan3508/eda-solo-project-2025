@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const createBookingSlice=(set, get) => ({
-  bookings: [],
+  bookings: [],  // For the admin: stores all bookings
+  customerBookings: [], //For the customer: stores only the customer's bookings
   officeHours: [],
   bookingDetails: {
     design_id: '',
@@ -23,16 +24,26 @@ fetchOfficeHours: async () => {
     console.log('Error:', error); 
   }
 },
-// Fetch Office Hours
-fetchBookings: async () => {
+// Fetch bookings for customers
+fetchCustomerBookings: async () => {
   try {
     const response = await axios.get('/api/bookings');
-    set({ bookings: response.data });
+    set({ customerBookings: response.data });
   } catch (error) {
     console.log('Error:', error); 
   }
 },
- 
+// Fetch bookings for admin
+fetchBookings: async () => {
+  try {
+    const response = await axios.get('/api/bookings/admin');
+    set({ bookings: response.data });
+  } catch (error) {
+    console.log('Error:', error);
+    set({ error: 'Failed to fetch bookings. Please try again later.' });
+  }
+},
+
 
   // Function to create a booking
   createBooking: async () => {

@@ -50,6 +50,12 @@ function Nav() {
         <li>
           <NavLink to="/bookingForm">Appointment</NavLink>
         </li>
+        <li>
+          <NavLink to="/customerpage">Your Appointment</NavLink>
+        </li>
+        <li>
+              <NavLink to="/admin">All Bookings</NavLink>
+           </li>
       </ul>
     </nav>
   );
