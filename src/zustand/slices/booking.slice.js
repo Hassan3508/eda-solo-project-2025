@@ -93,8 +93,16 @@ confirmBooking: async (bookingId) => {
   } catch (error) {
     console.error('Error confirming booking:', error);
   }
+},
+ // Function to toggle booking confirmation status
+ toggleBookingConfirmation: (id) => {
+  set((state) => {
+    const updatedBookings = state.bookings.map((booking) =>
+      booking.id === id ? { ...booking, isConfirmed: !booking.isConfirmed } : booking
+    );
+    return { bookings: updatedBookings };
+  });
 }
-
-})
+});
 
 export default createBookingSlice;
