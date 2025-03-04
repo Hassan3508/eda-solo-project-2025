@@ -59,25 +59,22 @@ fetchBookings: async () => {
     }
   },
 
-  // deleteBooking: async (id) => {
-  //   try {
-  //     await axios.delete(`/api/bookings/${id}`);
-  //     // After deletion, fetch bookings again to update the list
-  //     await get().fetchBookings();
-  //   } catch (error) {
-  //     console.error('Error deleting booking:', error);
-  //   }
-  // },
-  
-    // deleteCustomerBooking: async (id) => {
-    //   try {
-    //     await axios.delete(`/api/bookings/${id}`);
-    //     await get().fetchCustomerBookings();
-    //   } catch (error) {
-    //     console.error('Error deleting booking:', error);
-    //   }
-    // }
+// function to delete booking for admin
+deleteBooking: async (id) => {
+  try {
+    await axios.delete(`/api/bookings/admin/${id}`);
+    // After deletion, fetch bookings again to update the list
+    await get().fetchBookings();
+  } catch (error) {
+    console.error('Error deleting booking:', error);
+  }
+},
+
+
 })
+
+
+
 
 
   
