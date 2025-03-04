@@ -5,6 +5,7 @@ const CustomerPage = () => {
   const bookingDetails = useStore((state) => state.bookingDetails); 
   const officeHours = useStore((state) => state.officeHours); 
   const fetchCustomerBookings = useStore((state) => state.fetchCustomerBookings);
+  
 
   console.log("BookingDetails: ", bookingDetails); 
   console.log('office hours: ', officeHours);
