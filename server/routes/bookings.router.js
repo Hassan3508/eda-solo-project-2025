@@ -90,20 +90,20 @@ router.delete("/admin/:id", rejectUnauthenticated, (req, res) => {
       res.sendStatus(500); 
     });
 });
-router.delete("/:id", rejectUnauthenticated, (req, res) => {
-  const query = `
-   DELETE FROM "bookings"
-   WHERE "id" = $1 AND "user_id" = $2;
-`;
-  pool.query(query, [req.params.id, req.user.id])
-    .then(() => {
-      res.sendStatus(204); 
-    })
-    .catch(err => {
-      console.log(`Error deleting booking`, err);
-      res.sendStatus(500); 
-    });
-});
+// router.delete("/:id", rejectUnauthenticated, (req, res) => {
+//   const query = `
+//    DELETE FROM "bookings"
+//    WHERE "id" = $1 AND "user_id" = $2;
+// `;
+//   pool.query(query, [req.params.id, req.user.id])
+//     .then(() => {
+//       res.sendStatus(204); 
+//     })
+//     .catch(err => {
+//       console.log(`Error deleting booking`, err);
+//       res.sendStatus(500); 
+//     });
+// });
 
 
 
@@ -111,17 +111,17 @@ router.delete("/:id", rejectUnauthenticated, (req, res) => {
 // API endpoint to confirm a booking and update the `confirm_date`
 router.put('/confirm/:bookingId', rejectUnauthenticated, async (req, res) => {
   // Check if the user is an admin
+  const { bookingId } = req.params;
+
   if (!req.user.is_admin) {
     return res.status(403).send({ message: 'Permission denied' });
   }
 
-  const { bookingId } = req.params;
 
   try {
     const query = `
       UPDATE "bookings"
-      SET "status" = 'confirmed',
-          "confirm_date" = CURRENT_DATE 
+      SET "confirm" = NOT "confirm"
       WHERE "id" = $1
       RETURNING *;
     `;
@@ -135,6 +135,33 @@ router.put('/confirm/:bookingId', rejectUnauthenticated, async (req, res) => {
 
     res.status(200).send({
       message: 'Booking confirmed',
+      booking: result.rows[0],  
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: 'Internal server error' });
+  }
+});
+
+
+
+// API endpoint to confirm a booking and update the `confirm_date`
+router.put('/:bookingId', rejectUnauthenticated, async (req, res) => {
+
+  const { bookingId } = req.params;
+
+  try {
+    const query = `
+      UPDATE "bookings"
+      SET "booking_cancel" = TRUE
+      WHERE "id" = $1 AND "user_id" =$2
+      RETURNING *;
+    `;
+
+    const result = await pool.query(query, [bookingId, req.user.id])
+
+    res.status(200).send({
+      message: 'Booking cancel',
       booking: result.rows[0],  
     });
   } catch (err) {

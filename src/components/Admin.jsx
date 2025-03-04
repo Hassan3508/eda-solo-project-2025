@@ -5,13 +5,13 @@ import { Button, Container, Row, Col, Card } from 'react-bootstrap';
 const Admin = () => {
   const bookings = useStore((state) => state.bookings);
   const officeHours = useStore((state) => state.officeHours);
+  const fetchOfficeHours = useStore((state) => state.fetchOfficeHours);
   const designs = useStore((state) => state.designs);
   const fetchDesigns = useStore((store) => store.fetchDesigns);
   const fetchBookings = useStore((state) => state.fetchBookings);
   const deleteBooking = useStore((state) => state.deleteBooking); 
-  const toggleBookingConfirmation = useStore((state) => state.toggleBookingConfirmation);
-
-  const findOfficeHourById = (availableId) => {
+  const confirmBooking = useStore((state) => state.confirmBooking);
+ const findOfficeHourById = (availableId) => {
     const myFoundOfficeHour = officeHours.find((a) => Number(a.id) === Number(availableId));
     return `${myFoundOfficeHour.start_time} - ${myFoundOfficeHour.end_time}`;
   };
@@ -23,7 +23,8 @@ const Admin = () => {
 
   useEffect(() => {
     fetchBookings();  
-    fetchDesigns();   
+    fetchDesigns();  
+    fetchOfficeHours(); 
   }, []);
 
   const handleDeleteBooking = (id) => {
@@ -31,9 +32,10 @@ const Admin = () => {
   };
 
   const handleToggleBookingConfirmation = (id) => {
-    toggleBookingConfirmation(id); 
+    confirmBooking(id); 
   };
 
+  console.log('bookings on ADMIN PAGe', bookings);
   return (
     <Container className="my-4">
       <h1>All Booking Details</h1>
@@ -59,13 +61,16 @@ const Admin = () => {
                   <Card.Text>
                     <strong>Payment Date:</strong> {booking.payment_date}
                   </Card.Text>
+                  {booking.booking_cancel && <Card.Text>
+                    <strong>Cancel:</strong> {booking.booking_cancel ? 'Yes' : 'No'}
+                  </Card.Text>}
                   <div className="d-flex flex-column flex-sm-row justify-content-between">
                     <Button
-                      variant={booking.isConfirmed ? 'danger' : 'success'}
+                      variant={booking.confirm ? 'danger' : 'success'}
                       onClick={() => handleToggleBookingConfirmation(booking.id)}
                       className="mb-2 mb-sm-0 mr-sm-2 w-100 w-sm-auto"
                     >
-                      {booking.isConfirmed ? 'Unconfirm' : 'Confirm'}
+                      {booking.confirm ? 'Unconfirm' : 'Confirm'}
                     </Button>
                     <Button
                       variant="secondary"
