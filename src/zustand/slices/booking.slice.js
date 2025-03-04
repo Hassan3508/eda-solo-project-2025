@@ -70,6 +70,16 @@ deleteBooking: async (id) => {
   }
 },
 
+// Function to delete a customer's booking
+deleteCustomerBooking: async (id) => {
+  try {
+    await axios.delete(`/api/bookings/${id}`); 
+    const { customerBookings } = get();
+    set({ customerBookings: customerBookings.filter((booking) => booking.id !== id) });
+  } catch (error) {
+    console.error('Error deleting booking:', error);
+  }
+},
 
 })
 
