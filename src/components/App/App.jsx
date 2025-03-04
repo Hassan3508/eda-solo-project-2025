@@ -25,7 +25,7 @@ function App() {
   useEffect(() => {
     fetchUser();
     fetchOfficeHours();
-  }, [fetchUser]);
+  }, [user.id]);
 
   return (
     <>
@@ -77,7 +77,7 @@ function App() {
              path="/bookingform/:id"
             element={<BookingForm />}
           />
-          <Route path="/customer/:id" element={<CustomerPage />} />
+          <Route path="/customer" element={<CustomerPage />} />
           <Route 
              path="/admin"
             element={<Admin/>}

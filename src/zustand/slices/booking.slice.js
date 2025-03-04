@@ -51,7 +51,9 @@ fetchBookings: async () => {
     console.log('bookingdetails', bookingDetails);
 
     try {
-      await axios.post('/api/bookings', bookingDetails);
+      const response = await axios.post('/api/bookings', bookingDetails);
+      set({...bookingDetails, bookingId: response.data.id})
+      get().fetchCustomerBookings();
       
     } catch (error) {
       console.error('Error creating booking:', error);
@@ -70,22 +72,12 @@ deleteBooking: async (id) => {
   }
 },
 
-// Function to delete a customer's booking
-deleteCustomerBooking: async (id) => {
-  try {
-    await axios.delete(`/api/bookings/${id}`); 
-    const { customerBookings } = get();
-    set({ customerBookings: customerBookings.filter((booking) => booking.id !== id) });
-  } catch (error) {
-    console.error('Error deleting booking:', error);
-  }
-},
 
 // Function to confirm a booking (Admin Only)
 confirmBooking: async (bookingId) => {
   try {
-    const response = await axios.put(`/api/bookings/confirm/${bookingId}`);
-    console.log('Booking confirmed:', response.data);
+    await axios.put(`/api/bookings/confirm/${bookingId}`);
+    console.log('Booking confirmed:');
 
     // Refetch the bookings to ensure the data is up to date
     await get().fetchBookings(); 
@@ -94,15 +86,19 @@ confirmBooking: async (bookingId) => {
     console.error('Error confirming booking:', error);
   }
 },
- // Function to toggle booking confirmation status
- toggleBookingConfirmation: (id) => {
-  set((state) => {
-    const updatedBookings = state.bookings.map((booking) =>
-      booking.id === id ? { ...booking, isConfirmed: !booking.isConfirmed } : booking
-    );
-    return { bookings: updatedBookings };
-  });
-}
+// Function to confirm a booking (Admin Only)
+cancelBooking: async (bookingId) => {
+  try {
+    const response = await axios.put(`/api/bookings/${bookingId}`);
+    console.log('Booking cancel:', response.data);
+
+    // Refetch the bookings to ensure the data is up to date
+    await get().fetchCustomerBookings(); 
+
+  } catch (error) {
+    console.error('Error cancel booking:', error);
+  }
+},
 });
 
 export default createBookingSlice;

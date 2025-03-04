@@ -9,7 +9,6 @@ const BookingForm = () => {
   const createBooking = useStore(state => state.createBooking);
   const officeHours = useStore(state => state.officeHours);
   const designs = useStore((store) => store.designs);
-  // const BookingDetails = useStore((store) => store.BookingDetails);
 
   const navigate = useNavigate();
 
@@ -42,7 +41,7 @@ const findDesignById = (id) => {
 
     createBooking();
 
-  navigate(`/customer/${id}`);
+  navigate(`/customer`);
   
   };
   // setBookingDetails({
