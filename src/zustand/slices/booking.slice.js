@@ -81,14 +81,20 @@ deleteCustomerBooking: async (id) => {
   }
 },
 
+// Function to confirm a booking (Admin Only)
+confirmBooking: async (bookingId) => {
+  try {
+    const response = await axios.put(`/api/bookings/confirm/${bookingId}`);
+    console.log('Booking confirmed:', response.data);
+
+    // Refetch the bookings to ensure the data is up to date
+    await get().fetchBookings(); 
+
+  } catch (error) {
+    console.error('Error confirming booking:', error);
+  }
+}
+
 })
-
-
-
-
-
-  
-
-
 
 export default createBookingSlice;
