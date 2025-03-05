@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';  
 import useStore from '../zustand/store';
 import { useNavigate} from 'react-router-dom';
+import { Button, Card, Row, Col, Container } from 'react-bootstrap';
 
 const CustomerPage = () => {
   const navigate = useNavigate();
@@ -56,26 +57,44 @@ const CustomerPage = () => {
     //     <p>No booking details found.</p>
     //   )}
     // </div>
-    <div>
-      <h1>Booking Details</h1>
-      {customerBookings?.filter((b) => !b.booking_cancel).map((book) => (
-        <div key={book.id}>
-          <p>BookingId: {book.id}</p>
-          <p>Design: {findDesignById(book.design_id)?.title}</p>
-          <p>appointment: {book.appointment_date}</p>
-          <p>Time Slot: {findOfficeHourById(book.available_id)}</p>
-          <p>Payment Method: {(book.payment_method)}</p>
-          <p>payment Date: {(book.payment_date)}</p>
 
-          
-
-          
-
-          <button onClick={() => handleDeleteBooking(book.id)}>Cancel Booking</button>
-      </div>))}
-      <p>No booking details found.</p>
-    </div>
-  );
-};
-
-export default CustomerPage;
+      <Container>
+        <h1 className="my-4">Booking Details</h1>
+        {customerBookings?.filter((b) => !b.booking_cancel).length > 0 ? (
+          <Row>
+            {customerBookings?.filter((b) => !b.booking_cancel).map((book) => (
+              <Col key={book.id} sm={12} md={6} lg={4} className="mb-4">
+                <Card>
+                  <Card.Body>
+                    <Card.Title>Booking ID: {book.id}</Card.Title>
+                    <Card.Text>
+                      <strong>Design:</strong> {findDesignById(book.design_id)?.title}
+                    </Card.Text>
+                    <Card.Text>
+                      <strong>Appointment Date:</strong> {book.appointment_date}
+                    </Card.Text>
+                    <Card.Text>
+                      <strong>Time Slot:</strong> {findOfficeHourById(book.available_id)}
+                    </Card.Text>
+                    <Card.Text>
+                      <strong>Payment Method:</strong> {book.payment_method}
+                    </Card.Text>
+                    <Card.Text>
+                      <strong>Payment Date:</strong> {book.payment_date}
+                    </Card.Text>
+                    <Button variant="danger" onClick={() => handleDeleteBooking(book.id)}>
+                      Cancel Booking
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          <p>No booking details found.</p>
+        )}
+      </Container>
+    );
+  };
+  
+  export default CustomerPage;
