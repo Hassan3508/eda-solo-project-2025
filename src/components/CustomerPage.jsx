@@ -62,8 +62,18 @@ const CustomerPage = () => {
         <div key={book.id}>
           <p>BookingId: {book.id}</p>
           <p>Design: {findDesignById(book.design_id)?.title}</p>
+          <p>appointment: {book.appointment_date}</p>
+          <p>Time Slot: {findOfficeHourById(book.available_id)}</p>
+          <p>Payment Method: {(book.payment_method)}</p>
+          <p>payment Date: {(book.payment_date)}</p>
+
+          
+
+          
+
           <button onClick={() => handleDeleteBooking(book.id)}>Cancel Booking</button>
       </div>))}
+      <p>No booking details found.</p>
     </div>
   );
 };
