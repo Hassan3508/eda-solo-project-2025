@@ -1,139 +1,130 @@
-import useStore from '../zustand/store'
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import useStore from '../zustand/store';
 
-import { useParams } from 'react-router-dom';
- 
 const BookingForm = () => {
   const setBookingDetails = useStore(state => state.setBookingDetails);
   const createBooking = useStore(state => state.createBooking);
   const officeHours = useStore(state => state.officeHours);
-  const designs = useStore((store) => store.designs);
+  const designs = useStore(store => store.designs);
 
   const navigate = useNavigate();
-
-  const {id} = useParams();
-  console.log('DESIGN ID', id);
-
+  const { id } = useParams();
 
   const [appointmentDate, setAppointmentDate] = useState('');
   const [availableId, setAvailableId] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const [paymentDate, setPaymentDate] = useState('');
 
-
-const findDesignById = (id) => {
-  // console.log('find the image for this id', id);
-  return designs.find((design) => Number(design.id) === Number(id)) ;
-}
+  const findDesignById = (id) => {
+    return designs.find((design) => Number(design.id) === Number(id));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     setBookingDetails({
-      design_id: id, //will eventually use the 'id' from params
+      design_id: id,
       appointment_date: appointmentDate,
       available_id: Number(availableId),
       payment_method: paymentMethod,
       payment_date: paymentDate,
     });
 
-
     createBooking();
-
-  navigate(`/customer`);
-  
+    navigate(`/customer`);
   };
-  // setBookingDetails({
-  //   design_id: '',
-  //   appointment_date: '',
-  //   available_id: '',
-  //   payment_method: '',
-  //   payment_date: ''
-  // });
-  
-  // const handleCancel = () => {
-  //  // Navigate back to design page
-  //   navigate(`/designs/${id}`);
-  // };
 
   return (
-    <div>
-      <h2>Create Booking - {findDesignById(id)?.title}</h2>
-      <h3>Create Booking - ${findDesignById(id)?.price}</h3>
-      <img src={findDesignById(id)?.image_url} alt="design-name"/>
-      <form onSubmit={handleSubmit}>
-        {/* <div>
-          <div>Design ID:</div>
-          <input
-            type="text"
-            id="designId"
-            value={id}
-            // onChange={(e) => setDesignId(e.target.value)}
-            required
-          />
-        </div> */}
+    <Container className="d-flex justify-content-center py-4">
+      <Row className="w-100">
+        <Col xs={12} sm={12} md={8} lg={6} className="mx-auto">
+          <div className="p-3" style={{ backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+            <h4 className="text-center mb-4">Create Booking</h4>
+            <div className="text-center mb-3">
+              <h5>{findDesignById(id)?.title}</h5>
+              <p>Price: ${findDesignById(id)?.price}</p>
 
-        <div>
-          <div>Appointment Date:</div>
-          <input
-            type="date"
-            id="appointmentDate"
-            value={appointmentDate}
-            onChange={(e) => setAppointmentDate(e.target.value)}
-            required
-          />
-        </div>
+              {/* Image Wrapper - Make the card smaller */}
+              <div style={{ maxWidth: '250px', margin: '0 auto' }}>
+                <img
+                  src={findDesignById(id)?.image_url}
+                  alt={findDesignById(id)?.title}
+                  style={{
+                    maxWidth: '100%', 
+                    height: 'auto',
+                    objectFit: 'contain',
+                    borderRadius: '8px',
+                  }}
+                />
+              </div>
+            </div>
+            <Form onSubmit={handleSubmit}>
+              {/* Appointment Date */}
+              <Form.Group controlId="appointmentDate" className="mb-3">
+                <Form.Label>Appointment Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={appointmentDate}
+                  onChange={(e) => setAppointmentDate(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-        <div>
-          <div>Requested Time:</div>
-          <select 
-          id='select' 
-           onChange={(e) => setAvailableId(e.target.value)} 
-          value={availableId}
-         >  
-       {officeHours?.map((s) => (
-          <option key={s.id} value={s.id}>
-         Start: {s.start_time} End: {s.end_time}
-       </option>
-  ))}
-</select>
+              {/* Requested Time */}
+              <Form.Group controlId="availableId" className="mb-3">
+                <Form.Label>Requested Time</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={availableId}
+                  onChange={(e) => setAvailableId(e.target.value)}
+                  required
+                >
+                  {officeHours?.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      Start: {s.start_time} End: {s.end_time}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
 
-             
-        </div>
-      
+              {/* Payment Method */}
+              <Form.Group controlId="paymentMethod" className="mb-3">
+                <Form.Label>Payment Method</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={paymentMethod}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  required
+                >
+                  <option value="">Select a payment method</option>
+                  <option value="credit card">Credit Card</option>
+                  <option value="debit">Debit</option>
+                  <option value="cash">Cash</option>
+                </Form.Control>
+              </Form.Group>
 
-        <div>
-          <div>Payment Method:</div>
-          <select
-            id="paymentMethod"
-            value={paymentMethod}
-            onChange={(e) => setPaymentMethod(e.target.value)}
-            required
-          >
-            <option value="">Select a payment method</option>
-            <option value="credit card">Credit Card</option>
-            <option value="debit">debit</option>
-            <option value="cash">Cash</option>
-          </select>
-        </div>
+              {/* Payment Date */}
+              <Form.Group controlId="paymentDate" className="mb-3">
+                <Form.Label>Payment Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={paymentDate}
+                  onChange={(e) => setPaymentDate(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-        <div>
-          <div>Payment Date:</div>
-          <input
-            type="date"
-            id="paymentDate"
-            value={paymentDate}
-            onChange={(e) => setPaymentDate(e.target.value)}
-            required
-          />
-        </div>
-
-        <button type="submit">Submit Booking</button>
-        {/* <button type="button" onClick={handleCancel}>Cancel</button> */}
-
-      </form>
-    </div>
+              {/* Submit Button */}
+              <Button variant="primary" type="submit" className="w-100">
+                Submit Booking
+              </Button>
+            </Form>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

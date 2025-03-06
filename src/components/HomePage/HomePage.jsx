@@ -8,8 +8,9 @@ function HomePage() {
   return (
     <>
       <h2>Home Page</h2>
-      <p>Your username is: {user.username}</p>
+      <p>Welcome, {user.username}</p>
       <p>Your ID is: {user.id}</p>
+      <p>We're here to make your henna experience unforgettable.</p> 
       <button onClick={logOut}>
         Log Out
       </button>
