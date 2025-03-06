@@ -88,29 +88,24 @@ function App() {
               <>
                 <h2>About Page</h2>
                 <p>
-                  Intelligence doesn’t seem like an aspect of personal character, and it isn’t.
-                  Coincidentally, great intelligence is only loosely connected to being a good programmer.
+                Henna, a timeless form of art, has been practiced for centuries across various cultures.
+                This intricate design technique uses a natural paste derived from the Lawsonia inermis plant
+                to create beautiful patterns on the skin. Whether it's for weddings, festivals, or personal expression,
+                henna designs add elegance and symbolism to special occasions.
                 </p>
                 <p>
-                  What? You don’t have to be superintelligent?
+                 The tradition of applying henna is steeped in cultural significance, often representing
+                  prosperity, happiness, and blessings. From the delicate swirls of geometric patterns to
+                  the bold expressions of floral designs, henna artistry can convey a wide range of meanings
+                   and emotions.
                 </p>
                 <p>
-                  No, you don’t. Nobody is really smart enough to program computers.
-                  Fully understanding an average program requires an almost limitless capacity
-                  to absorb details and an equal capacity to comprehend them all at the same time.
-                  The way you focus your intelligence is more important than how much intelligence you have…
+                At Marwa Henna, we are dedicated to preserving the rich heritage of this ancient art while
+                creating unique designs tailored to every individual. Our goal is to bring beauty and
+                 meaning to every client through the art of henna.
                 </p>
                 <p>
-                  …most of programming is an attempt to compensate for the strictly limited size of our skulls.
-                  The people who are the best programmers are the people who realize how small their brains are.
-                  They are humble. The people who are the worst at programming are the people who refuse to
-                  accept the fact that their brains aren’t equal to the task.
-                  Their egos keep them from being great programmers.
-                  The more you learn to compensate for your small brain, the better a programmer you’ll be.
-                  <span className="squiggle"> The more humble you are, the faster you’ll improve.</span>
-                </p>
-                <p>
-                  --From Steve McConnell's <em>Code Complete</em>.
+                   <em> -- From Marwa Adan, Henna Artistry Mastery</em>.
                 </p>
               </>
             }

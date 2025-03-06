@@ -41,23 +41,6 @@ const CustomerPage = () => {
   
   
   return (
-    // <div>
-    //   <h1>Booking Details</h1>
-    //   {bookingDetails?.design_id ? (
-    //     <div>
-    //       <h2>BookingId: {findBookingById(bookingDetails?.bookingId)}</h2>
-    //       <h3>DesignId: {bookingDetails?.design_id}</h3>
-    //       <p>Appointment Date: {bookingDetails?.appointment_date}</p>
-    //       <p>Time Slot: {findOfficeHourById(bookingDetails?.available_id)}</p>
-    //       <p>Payment Method: {bookingDetails?.payment_method}</p>
-    //       <p>Payment Date: {bookingDetails?.payment_date}</p>
-    //       <button onClick={() => handleDeleteBooking(bookingDetails?.bookingId)}>Cancel Booking</button>
-    //     </div>
-    //   ) : (
-    //     <p>No booking details found.</p>
-    //   )}
-    // </div>
-
       <Container>
         <h1 className="my-4">Booking Details</h1>
         {customerBookings?.filter((b) => !b.booking_cancel).length > 0 ? (

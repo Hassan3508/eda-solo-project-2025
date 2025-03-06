@@ -29,6 +29,10 @@ function Nav() {
             <li>
               <NavLink to="/designlist">Designs</NavLink>
               </li>
+              <li>
+          <NavLink to="/customer">Your Appointment</NavLink>
+        </li>
+
           </>
         )
       }
@@ -40,6 +44,10 @@ function Nav() {
              
               <NavLink to="/design">Add Designs</NavLink>
             </li>
+            <li>
+              <NavLink to="/admin">All Bookings</NavLink>
+        </li>
+      
           </>
         )
       }
@@ -47,15 +55,13 @@ function Nav() {
         <li>
           <NavLink to="/about">About</NavLink>
         </li>
+        {/* 
         <li>
           <NavLink to="/bookingForm">Appointment</NavLink>
-        </li>
-        <li>
-          <NavLink to="/customer">Your Appointment</NavLink>
-        </li>
-        <li>
-              <NavLink to="/admin">All Bookings</NavLink>
-        </li>
+        </li> */
+        }
+        
+       
       </ul>
     </nav>
   );
