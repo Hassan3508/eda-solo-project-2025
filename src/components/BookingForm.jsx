@@ -63,7 +63,7 @@ const BookingForm = () => {
             <Form onSubmit={handleSubmit}>
               {/* Appointment Date */}
               <Form.Group controlId="appointmentDate" className="mb-3">
-                <Form.Label>Appointment Date</Form.Label>
+                <Form.Label style={{color: 'black'}}>Appointment Date</Form.Label>
                 <Form.Control
                   type="date"
                   value={appointmentDate}

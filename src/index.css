@@ -52,12 +52,14 @@ nav ul {
 }
 
 nav a {
-  color: rgba(0, 0, 0, 0.5);
+  /* color: rgba(0, 0, 0, 0.5); */
+  color: white;
   text-decoration: none;
 }
 
 nav a.active {
-  color: rgba(0, 0, 0, 0.75);
+  /* color: rgba(0, 0, 0, 0.75); */
+  color: white;
   text-decoration: underline;
   text-decoration-color: #20c997;
   text-decoration-thickness: 2px;

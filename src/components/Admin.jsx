@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import useStore from '../zustand/store';
 import { Button, Container, Row, Col, Card } from 'react-bootstrap';
+import moment from "moment";
 
 const Admin = () => {
   const bookings = useStore((state) => state.bookings);
@@ -49,12 +50,11 @@ const Admin = () => {
             <Col key={index} xs={12} sm={6} md={4} lg={3} className="mb-4">
               <Card>
                 <Card.Body>
-                  <Card.Title>Booking ID: {booking.id}</Card.Title>
                   <Card.Text>
                     <strong>Design:</strong> {findDesignById(booking.design_id)}
                   </Card.Text>
                   <Card.Text>
-                    <strong>Appointment Date:</strong> {booking.appointment_date}
+                    <strong>Appointment Date:</strong> {moment(booking.appointment_date).format('MMMM Do YYYY')}
                   </Card.Text>
                   <Card.Text>
                     <strong>Time Slot:</strong> {findOfficeHourById(booking.available_id)}
@@ -63,7 +63,7 @@ const Admin = () => {
                     <strong>Payment Method:</strong> {booking.payment_method}
                   </Card.Text>
                   <Card.Text>
-                    <strong>Payment Date:</strong> {booking.payment_date}
+                    <strong>Payment Date:</strong>  {moment(booking.payment_date).format('MMMM Do YYYY')}
                   </Card.Text>
                   {booking.booking_cancel && <Card.Text>
                     <strong>Cancel:</strong> {booking.booking_cancel ? 'Yes' : 'No'}
