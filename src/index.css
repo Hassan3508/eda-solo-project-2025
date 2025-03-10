@@ -1,6 +1,5 @@
-
 /* Box-Sizing Fix: */
-  /* https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
+/* https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
 *,
 *::before,
 *::after {
@@ -18,6 +17,25 @@ body {
   font-family: sans-serif;
   background-color: #f0f0f0;
   color: rgba(0, 0, 0, 0.75);
+  background-image: url('/images/wallpaper.jpeg');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  position: relative;
+  overflow-y: scroll; 
+} 
+body::before {
+  content: '';
+  position: fixed; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); 
+  z-index: -1; 
 }
 
 /* Basic Header/Main/Footer Flexbox Layout: */
@@ -42,6 +60,17 @@ header, footer {
   justify-content: space-between;
 }
 
+/* Footer Spacing */
+footer {
+  margin-top: 20px;  /* Adds space between content and footer */
+  padding: 20px 0;   /* Adds padding within the footer */
+}
+
+/* Optional: For a better visual effect */
+main {
+  padding-bottom: 50px;  /* Creates more space below the main content */
+}
+
 /* Nav Styles: */
 nav ul {
   display: flex;
@@ -52,13 +81,11 @@ nav ul {
 }
 
 nav a {
-  /* color: rgba(0, 0, 0, 0.5); */
   color: white;
   text-decoration: none;
 }
 
 nav a.active {
-  /* color: rgba(0, 0, 0, 0.75); */
   color: white;
   text-decoration: underline;
   text-decoration-color: #20c997;
@@ -93,7 +120,7 @@ button {
 
 button:hover, button:focus {
   outline-color: transparent;
-  outline-style:solid;
+  outline-style: solid;
   box-shadow: 0 0 3px 1px #20c997;
   transition: 0.7s;
 }
@@ -103,4 +130,12 @@ button:hover, button:focus {
   text-decoration: wavy underline;
   text-decoration-color: #20c997;
   text-decoration-thickness: 2px;
+}
+
+h2 {
+  color: aliceblue;
+}
+
+.black-text {
+  color: black;
 }

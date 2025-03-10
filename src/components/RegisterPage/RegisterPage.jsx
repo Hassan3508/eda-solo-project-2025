@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import useStore from '../../zustand/store';
-
+import './RegisterPage.css'; // Ensure the CSS file is imported correctly
 
 function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -8,7 +8,7 @@ function RegisterPage() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
 
-  const register = useStore((state) => state.register)
+  const register = useStore((state) => state.register);
   const errorMessage = useStore((state) => state.authErrorMessage);
   const setAuthErrorMessage = useStore((state) => state.setAuthErrorMessage);
 
@@ -16,24 +16,23 @@ function RegisterPage() {
     // Clear the auth error message when the component unmounts:
     return () => {
       setAuthErrorMessage('');
-    }
-  }, [])
+    };
+  }, [setAuthErrorMessage]);
 
   const handleRegister = (event) => {
     event.preventDefault();
-
     register({
-      username: username,
-      password: password,
-      name: name,
-      phone: phone,
-    })
+      username,
+      password,
+      name,
+      phone,
+    });
   };
 
   return (
-    <>
-      <h2>Register Page</h2>
-      <form onSubmit={handleRegister}>
+    <div className="register-container">
+      <h2>Marwa's Henna Register Page</h2>
+      <form onSubmit={handleRegister} className="register-form">
         <label htmlFor="username">Username:</label>
         <input
           type="text"
@@ -52,7 +51,7 @@ function RegisterPage() {
         />
         <label htmlFor="name">Name:</label>
         <input
-          type="name"
+          type="text"
           id="name"
           required
           value={name}
@@ -60,24 +59,21 @@ function RegisterPage() {
         />
         <label htmlFor="phone">Phone:</label>
         <input
-          type="phone"
+          type="text"
           id="phone"
           required
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
-        <button type="submit">
-          Register 
+        <button className="btn btn-dark register-button" type="submit">
+          Register
         </button>
       </form>
-      { // Conditionally render registration error:
-        errorMessage && (
-          <h3>{errorMessage}</h3>
-        )
-      }
-    </>
+      {errorMessage && (
+        <h3 className="error-message">{errorMessage}</h3>
+      )}
+    </div>
   );
 }
-
 
 export default RegisterPage;
