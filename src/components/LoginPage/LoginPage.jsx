@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import useStore from '../../zustand/store';
-
+import "./LoginPage.css"; 
 
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const logIn = useStore((state) => state.logIn)
+  const logIn = useStore((state) => state.logIn);
   const errorMessage = useStore((state) => state.authErrorMessage);
   const setAuthErrorMessage = useStore((state) => state.setAuthErrorMessage);
 
@@ -13,24 +13,24 @@ function LoginPage() {
     // Clear the auth error message when the component unmounts:
     return () => {
       setAuthErrorMessage('');
-    }
-  }, [])
+    };
+  }, [setAuthErrorMessage]);
 
   const handleLogIn = (event) => {
     event.preventDefault();
-
     logIn({
-      username: username,
-      password: password,
-    })
+      username,
+      password,
+    });
   };
 
   return (
-    <>
+    <div className="login-container">
       <h2>Login Page</h2>
-      <form onSubmit={handleLogIn}>
+      <form onSubmit={handleLogIn} className="login-form">
         <label htmlFor="username">Username:</label>
         <input
+          className="form-control"
           type="text"
           id="username"
           required
@@ -38,25 +38,21 @@ function LoginPage() {
           onChange={(e) => setUsername(e.target.value)}
         />
         <label htmlFor="password">Password:</label>
-        <input
+        <input 
+          className="form-control"
           type="password"
           id="password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">
+        <button className="btn btn-dark login-button" type="submit">
           Log In
         </button>
       </form>
-      { // Conditionally render login error:
-        errorMessage && (
-          <h3>{errorMessage}</h3>
-        )
-      }
-    </>
+      {errorMessage && <h3 className="error-message">{errorMessage}</h3>}
+    </div>
   );
 }
-
 
 export default LoginPage;

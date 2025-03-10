@@ -41,8 +41,8 @@ const BookingForm = () => {
       <Row className="w-100">
         <Col xs={12} sm={12} md={8} lg={6} className="mx-auto">
           <div className="p-3" style={{ backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
-            <h4 className="text-center mb-4">Create Booking</h4>
-            <div className="text-center mb-3">
+            <h4 className='text-center mb-4 black-text'>Create Booking</h4>
+            <div className="text-center mb-3 black-text">
               <h5>{findDesignById(id)?.title}</h5>
               <p>Price: ${findDesignById(id)?.price}</p>
 
@@ -74,7 +74,7 @@ const BookingForm = () => {
 
               {/* Requested Time */}
               <Form.Group controlId="availableId" className="mb-3">
-                <Form.Label>Requested Time</Form.Label>
+                <Form.Label style={{color: 'black'}}>Requested Time</Form.Label>
                 <Form.Control
                   as="select"
                   value={availableId}
@@ -91,7 +91,7 @@ const BookingForm = () => {
 
               {/* Payment Method */}
               <Form.Group controlId="paymentMethod" className="mb-3">
-                <Form.Label>Payment Method</Form.Label>
+                <Form.Label style={{color: 'black'}}>Payment Method</Form.Label>
                 <Form.Control
                   as="select"
                   value={paymentMethod}
@@ -107,7 +107,7 @@ const BookingForm = () => {
 
               {/* Payment Date */}
               <Form.Group controlId="paymentDate" className="mb-3">
-                <Form.Label>Payment Date</Form.Label>
+                <Form.Label style={{color: 'black'}}>Payment Date</Form.Label>
                 <Form.Control
                   type="date"
                   value={paymentDate}

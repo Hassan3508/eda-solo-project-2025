@@ -1,27 +1,3 @@
-/* Body Styles */
-body {
-  background-image: url('../../public/images/wallpaper.jpeg');
-  background-size: cover;
-  background-position: center center;
-  background-attachment: fixed;
-  height: 100vh;
-  margin: 0;
-  font-family: Arial, sans-serif;
-  position: relative;
-  overflow-y: scroll; /* Enable scroll without affecting the background */
-}
-
-/* Add overlay for better text visibility */
-body::before {
-  content: '';
-  position: fixed; /* Fix the overlay to stay in place while scrolling */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* Dark overlay with transparency */
-  z-index: -1; /* Place overlay behind the content */
-}
 
 /* Styling for the card */
 .card {
