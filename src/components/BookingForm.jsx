@@ -16,9 +16,16 @@ const BookingForm = () => {
   const [availableId, setAvailableId] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const [paymentDate, setPaymentDate] = useState('');
+  const [requestedTime, setRequestedTime] = useState('');
 
   const findDesignById = (id) => {
     return designs.find((design) => Number(design.id) === Number(id));
+  };
+
+  const handleTimeChange = (e) => {
+    setAvailableId(e.target.value);
+    const selected = officeHours.find(s => String(s.id) === e.target.value);
+    setRequestedTime(selected ? `${selected.start_time} - ${selected.end_time}` : '');
   };
 
   const handleSubmit = (e) => {
@@ -30,6 +37,7 @@ const BookingForm = () => {
       available_id: Number(availableId),
       payment_method: paymentMethod,
       payment_date: paymentDate,
+      requested_time: requestedTime,
     });
 
     createBooking();
@@ -45,8 +53,6 @@ const BookingForm = () => {
             <div className="text-center mb-3 black-text">
               <h5>{findDesignById(id)?.title}</h5>
               <p>Price: ${findDesignById(id)?.price}</p>
-
-              {/* Image Wrapper - Make the card smaller */}
               <div style={{ maxWidth: '250px', margin: '0 auto' }}>
                 <img
                   src={findDesignById(id)?.image_url}
@@ -61,7 +67,6 @@ const BookingForm = () => {
               </div>
             </div>
             <Form onSubmit={handleSubmit}>
-              {/* Appointment Date */}
               <Form.Group controlId="appointmentDate" className="mb-3">
                 <Form.Label style={{color: 'black'}}>Appointment Date</Form.Label>
                 <Form.Control
@@ -71,29 +76,24 @@ const BookingForm = () => {
                   required
                 />
               </Form.Group>
-
-              {/* Requested Time */}
               <Form.Group controlId="availableId" className="mb-3">
                 <Form.Label style={{color: 'black'}}>Requested Time</Form.Label>
-                <Form.Control
-                  as="select"
+                <Form.Select
                   value={availableId}
-                  onChange={(e) => setAvailableId(e.target.value)}
+                  onChange={handleTimeChange}
                   required
                 >
+                  <option value="">Select a time slot</option>
                   {officeHours?.map((s) => (
                     <option key={s.id} value={s.id}>
                       Start: {s.start_time} End: {s.end_time}
                     </option>
                   ))}
-                </Form.Control>
+                </Form.Select>
               </Form.Group>
-
-              {/* Payment Method */}
               <Form.Group controlId="paymentMethod" className="mb-3">
                 <Form.Label style={{color: 'black'}}>Payment Method</Form.Label>
-                <Form.Control
-                  as="select"
+                <Form.Select
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value)}
                   required
@@ -102,10 +102,8 @@ const BookingForm = () => {
                   <option value="credit card">Credit Card</option>
                   <option value="debit">Debit</option>
                   <option value="cash">Cash</option>
-                </Form.Control>
+                </Form.Select>
               </Form.Group>
-
-              {/* Payment Date */}
               <Form.Group controlId="paymentDate" className="mb-3">
                 <Form.Label style={{color: 'black'}}>Payment Date</Form.Label>
                 <Form.Control
@@ -115,8 +113,6 @@ const BookingForm = () => {
                   required
                 />
               </Form.Group>
-
-              {/* Submit Button */}
               <Button variant="primary" type="submit" className="w-100">
                 Submit Booking
               </Button>
