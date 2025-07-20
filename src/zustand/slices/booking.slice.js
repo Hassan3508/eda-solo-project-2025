@@ -10,90 +10,106 @@ const createBookingSlice = (set, get) => ({
     requested_time: '', 
     available_id: '',
     payment_method: '',
-    payment_date: ''
+    payment_date: '',
+    bookingId: null  // 🟨 Added to track the ID after creation
   },
   error: null,
 
-  // Function to update booking details
-  setBookingDetails: (newDetails) => set((state) => ({
-    bookingDetails: { ...state.bookingDetails, ...newDetails }
-  })),
+  setBookingDetails: (newDetails) =>
+    set((state) => ({
+      bookingDetails: { ...state.bookingDetails, ...newDetails }
+    })),
 
-  // Fetch Office Hours
   fetchOfficeHours: async () => {
     try {
       const response = await axios.get('/api/office-hours');
       set({ officeHours: response.data });
     } catch (error) {
-      console.log('Error:', error); 
+      console.error('Error fetching office hours:', error);
     }
   },
 
-  // Fetch bookings for customers
   fetchCustomerBookings: async () => {
     try {
-      const response = await axios.get('/api/bookings');
+      const response = await axios.get('/api/bookings', {
+        withCredentials: true
+      });
       set({ customerBookings: response.data });
     } catch (error) {
-      console.log('Error:', error); 
+      console.error('Error fetching customer bookings:', error);
     }
   },
 
-  // Fetch bookings for admin
   fetchBookings: async () => {
     try {
-      const response = await axios.get('/api/bookings/admin');
+      const response = await axios.get('/api/bookings/admin', {
+        withCredentials: true
+      });
       set({ bookings: response.data });
     } catch (error) {
-      console.log('Error:', error);
+      console.error('Error fetching bookings:', error);
       set({ error: 'Failed to fetch bookings. Please try again later.' });
     }
   },
 
-  // Function to create a booking
   createBooking: async () => {
     const { bookingDetails } = get();
     console.log('bookingdetails', bookingDetails);
 
     try {
-      const response = await axios.post('/api/bookings', bookingDetails);
+      const response = await axios.post('/api/bookings', bookingDetails, {
+        withCredentials: true
+      });
+
       set((state) => ({
-        bookingDetails: { ...state.bookingDetails, bookingId: response.data.id }
+        bookingDetails: {
+          ...state.bookingDetails,
+          bookingId: response.data.booking?.id || null
+        },
+        error: null
       }));
+
       await get().fetchCustomerBookings();
     } catch (error) {
-      console.error('Error creating booking:', error);
-      set({ error: 'Failed to create booking. Please try again later.' });
+      if (error.response?.status === 409) {
+        alert(error.response.data.message); // Handle slot conflict
+      } else {
+        console.error('Error creating booking:', error);
+        set({ error: 'Failed to create booking. Please try again later.' });
+      }
     }
   },
 
-  // Function to delete booking for admin
   deleteBooking: async (id) => {
     try {
-      await axios.delete(`/api/bookings/admin/${id}`);
+      await axios.delete(`/api/bookings/admin/${id}`, {
+        withCredentials: true
+      });
       await get().fetchBookings();
     } catch (error) {
       console.error('Error deleting booking:', error);
     }
   },
 
-  // Function to confirm a booking (Admin Only)
   confirmBooking: async (bookingId) => {
     try {
-      await axios.put(`/api/bookings/confirm/${bookingId}`);
-      console.log('Booking confirmed:');
-      await get().fetchBookings(); 
+      await axios.put(`/api/bookings/confirm/${bookingId}`, {}, {
+        withCredentials: true
+      });
+      console.log('Booking confirmed');
+      await get().fetchBookings();
     } catch (error) {
       console.error('Error confirming booking:', error);
     }
   },
 
-  // Function to cancel a booking
   cancelBooking: async (bookingId) => {
     try {
-      const response = await axios.put(`/api/bookings/cancel/${bookingId}`);
+      const response = await axios.put(`/api/bookings/cancel/${bookingId}`, {}, {
+        withCredentials: true
+      });
       console.log('Booking cancel:', response.data);
-      await get().fetchCustomerBookings(); 
+      await get().fetchCustomerBookings();
     } catch (error) {
       console.error('Error cancel booking:', error);
     }
