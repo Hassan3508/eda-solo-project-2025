@@ -31,12 +31,12 @@
     "zustand": "^5.0.3"
   },
   "scripts": {
-    "start": "node server/server.js",
-    "client": "vite --host",
-    "server": "nodemon --watch server server/server.js",
-    "build": "vite build",
-    "test": "vitest"
-  },
+  "start": "node server/server.js",
+  "client": "vite --host",
+  "server": "nodemon --watch server server/server.js",
+  "build": "vite build",
+  "test": "vitest"
+},
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
     "nodemon": "^3.1.0",

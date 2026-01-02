@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const fs = require('fs');
+const fs = require('fs/promises');
 const pool = require('../modules/pool');
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 const cloudinary = require('cloudinary').v2;
@@ -12,56 +12,65 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Temporary local file storage
-const upload = multer({ dest: 'uploads/' });
+// Temporary local file storage + safety
+const upload = multer({
+  dest: 'uploads/',
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new Error('Only image files are allowed'));
+    }
+    cb(null, true);
+  }
+});
 
-// Upload route (admin-only)
 router.post('/', rejectUnauthenticated, upload.single('image'), async (req, res) => {
-  // ✅ Only allow admin users
-  if (!req.user?.is_admin) {
-    return res.sendStatus(403); // Forbidden
-  }
-
-  if (!req.file) {
-    return res.status(400).send({ error: 'No file uploaded' });
-  }
+  if (!req.user?.is_admin) return res.sendStatus(403);
+  if (!req.file) return res.status(400).send({ error: 'No file uploaded' });
 
   const filePath = req.file.path;
+  let cloudResult;
 
   try {
-    // Upload to Cloudinary
-    const cloudResult = await cloudinary.uploader.upload(filePath);
+    cloudResult = await cloudinary.uploader.upload(filePath);
 
-    // Save to database
     const query = `
       INSERT INTO user_uploads (user_id, image_url, public_id)
-      VALUES ($1, $2, $3) RETURNING *;
+      VALUES ($1, $2, $3)
+      RETURNING *;
     `;
-    const result = await pool.query(query, [
+
+    const dbResult = await pool.query(query, [
       req.user.id,
       cloudResult.secure_url,
       cloudResult.public_id
     ]);
 
-    // Clean up temp file
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error('Failed to delete temp file:', err);
-      }
+    return res.status(201).send({
+      message: 'Uploaded successfully',
+      file: dbResult.rows[0],
     });
-
-    res.status(201).send({ message: 'Uploaded successfully', file: result.rows[0] });
   } catch (error) {
     console.error('Upload failed:', error);
 
-    // Clean up temp file on error
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error('Failed to delete temp file on error:', err);
+    // If Cloudinary succeeded but DB failed, clean up Cloudinary
+    if (cloudResult?.public_id) {
+      try {
+        await cloudinary.uploader.destroy(cloudResult.public_id);
+      } catch (destroyErr) {
+        console.error('Failed to delete Cloudinary image:', destroyErr);
       }
-    });
+    }
 
-    res.status(500).send({ error: 'Upload failed' });
+    return res.status(500).send({ error: 'Upload failed' });
+  } finally {
+    // Always cleanup local temp file
+    try {
+      await fs.unlink(filePath);
+    } catch (unlinkErr) {
+      // file might already be gone; don’t crash
+      console.error('Failed to delete temp file:', unlinkErr);
+    }
   }
 });
 
