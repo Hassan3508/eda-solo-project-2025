@@ -4,6 +4,10 @@ require('dotenv').config();
 // Import dependencies
 const express = require('express');
 const cors = require('cors');
+const helmet = require("helmet");
+const morgan = require("morgan");
+const compression = require("compression");
+const rateLimit = require("express-rate-limit");
 
 // Initialize express app
 const app = express();
@@ -29,11 +33,24 @@ try {
   console.warn('⚠️ Categories router not found or not implemented.');
 }
 
-// CORS setup: Allow requests from your frontend (localhost:3000)
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+    return cb(new Error("Not allowed by CORS"));
+  },
   credentials: true
 }));
+
+app.use(helmet());
+app.use(compression());
+app.use(morgan("dev"));
+app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 300 }));
 
 // Middleware
 app.use(express.json());
