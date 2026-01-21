@@ -4,6 +4,10 @@ require('dotenv').config();
 // Import dependencies
 const express = require('express');
 const cors = require('cors');
+const helmet = require("helmet");
+const morgan = require("morgan");
+const compression = require("compression");
+const rateLimit = require("express-rate-limit");
 
 // Initialize express app
 const app = express();
