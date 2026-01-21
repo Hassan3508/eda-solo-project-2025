@@ -38,6 +38,10 @@ app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true
 }));
+app.use(helmet());
+app.use(compression());
+app.use(morgan("dev"));
+app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 300 }));
 
 // Middleware
 app.use(express.json());
